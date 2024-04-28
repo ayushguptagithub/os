@@ -1,0 +1,359 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        h1 {
+            color: red;
+        }
+
+        pre {
+            margin-left: 20px;
+        }
+
+        .row {
+            display: flex;
+            flex-direction: row;
+        }
+        ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border:#979595;
+}
+
+li {
+  float: left;
+  border-right:1px solid #bbb;
+}
+
+li:last-child {
+  border-right: none;
+}
+
+li a {
+  display: block;
+  color: rgb(0, 0, 0);
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover:not(.active) {
+  background-color: #979595;
+}
+
+.active {
+  background-color: #9fa1a0;
+}
+
+    </style>
+</head>
+
+<body>
+    <ul>
+        <li><a href="index.html">Exp1</a></li>
+        <li><a href="exp2.html">Exp2</a></li>
+        <li><a href="exp3.html">Exp3</a></li>
+        <li ><a href="exp4.html">Exp4</a></li>
+        <li><a href="exp5.html">Exp5</a></li>
+        <li><a href="exp6.html">Exp6</a></li>
+        <li><a href="exp7.html">Exp7</a></li>
+        <li ><a  class="active" href="exp8.html">Exp8</a></li>
+        <li><a href="exp9.html">Exp9</a></li>
+        <li><a href="exp10.html">Exp10</a></li>
+        <li><a href="exp11.html">Exp11</a></li>
+        <li ><a href="exp12.html">Exp12</a></li>
+        <li><a href="exp13.html">Exp13</a></li>
+        
+      </ul>
+    <hr>
+    <div class=row>
+        <div class="col-1">
+            <pre>
+
+              <h1>Program 1:(FCFS)</h1>
+
+              #include&lt;stdio.h&gt;
+              #include&lt;string.h&gt;
+              int main()
+              {
+                  char pn[10][10], t[10];
+                  int arr[10], bur[10], star[10], finish[10], tat[10], wt[10], i, j, n, temp;
+                  int totwt=0, tottat=0;
+                  printf("Enter the number of processes:");
+                  scanf("%d", &n);
+                  for(i=0; i&lt;n; i++)
+                  {
+                      printf("Enter the ProcessName, Arrival Time&amp; Burst time:");
+                      scanf("%s %d %d", &pn[i], &arr[i], &bur[i]);
+                  }
+                  for(i=0; i&lt;n; i++)
+                  {
+                      for(j=0; j&lt;n; j++)
+                      {
+                          if(arr[i]&lt;arr[j])
+                          {
+                              temp=arr[i];
+                              arr[i]=arr[j];
+                              arr[j]=temp;
+                              temp=bur[i];
+                              bur[i]=bur[j];
+                              bur[j]=temp;
+                              strcpy(t, pn[i]);
+                              strcpy(pn[i], pn[j]);
+                              strcpy(pn[j], t);
+                          }
+                      }
+                  }
+                  for(i=0; i&lt;n; i++)
+                  {
+                      if(i==0)
+                          star[i]=arr[i];
+                      else
+                          star[i]=finish[i-1];
+                      wt[i]=star[i]-arr[i];
+                      finish[i]=star[i]+bur[i];
+                      tat[i]=finish[i]-arr[i];
+                  }
+                  printf("\nPName Arrtime Burtime WaitTime Start TAT Finish");
+                  for(i=0; i&lt;n; i++)
+                  {
+                      printf("\n%s\t%3d\t%3d\t%3d\t%3d\t%6d\t%6d", pn[i], arr[i], bur[i], wt[i], star[i], tat[i], finish[i]);
+                      totwt+=wt[i];
+                      tottat+=tat[i];
+                  }
+                  printf("\nAverage Waiting time:%f", (float)totwt/n);
+                  printf("\nAverage Turn Around Time:%f", (float)tottat/n);
+                  return 0;
+              }
+
+              <h1>Program 2: SJF (Shortest Job First)</h1>
+
+              #include &lt;stdio.h&gt;
+              int main()
+              {
+                  int time, burst_time[10], at[10], sum_burst_time = 0, smallest, n, i;
+                  int sumt=0, sumw=0;
+                  printf("Enter the no of processes : ");
+                  scanf("%d", & n);
+                  for(i=0; i&lt;n; i++)
+                  {
+                      printf("Enter arrival time and burst time for process P%d : ", i+1);
+                      scanf("%d %d", & at[i], & burst_time[i]);
+                      sum_burst_time += burst_time[i];
+                  }
+                  burst_time[9] = 9999;
+                  printf("\nProcess\t\tTAT\t\tWaiting time\n");
+                  for(time=0; time&lt;sum_burst_time;)
+                  {
+                      smallest=9;
+                      for(i=0; i&lt;n; i++)
+                      {
+                          if(at[i]&lt;=time && burst_time[i]&gt;0 && burst_time[i]&lt;burst_time[smallest])
+                              smallest=i;
+                      }
+                      printf("P[%d]\t|\t%d\t|\t%d\n", smallest+1, time+burst_time[smallest]-at[smallest], time-at[smallest]);
+                      sumt+=time+burst_time[smallest]-at[smallest];
+                      sumw+=time-at[smallest];
+                      time+=burst_time[smallest];
+                      burst_time[smallest]=0;
+                  }
+                  printf("\n\n average waiting time = %f", sumw*1.0/n);
+                  printf("\n\n average turnaround time = %f\n", sumt*1.0/n);
+                  return 0;
+              }
+
+              <h1>Program 3(RR (Round Robin))</h1>
+
+              #include&lt;stdio.h>
+                struct process
+                {
+                    int id, AT, BT, WT, TAT;
+                };
+                struct process a[10];
+                // declaration of the ready queue
+                int queue[100];
+                int front = -1;
+                int rear = -1;
+                // function for insert the element
+                // into queue
+                void insert(int n)
+                {
+                    if (front == -1)
+                        front = 0;
+                    rear = rear + 1;
+                    queue[rear] = n;
+                }
+                // function for delete the
+                // element from queue
+                int delete()
+                {
+                    int n;
+                    n = queue[front];
+                    front = front + 1;
+                    return n;
+                }
+                int main()
+                {
+                    int n, TQ, p, TIME = 0;
+                    int temp[10], exist[10] = { 0 };
+                    float total_wt = 0, total_tat = 0, Avg_WT, Avg_TAT;
+                    printf("Enter the number of the process\n");
+                    scanf("%d", & n);
+                    printf("Enter the arrival time and burst time of the process\n");
+                    printf("AT BT\n");
+                    for (int i = 0; i &lt; n; i++)
+                    {
+                        scanf("%d%d", & a[i].AT, & a[i].BT);
+                        a[i].id = i;
+                        temp[i] = a[i].BT;
+                    }
+                    printf("Enter the time quantum\n");
+                    scanf("%d", & TQ);
+                    // logic for round robin scheduling
+                    // insert first process
+                    // into ready queue
+                    insert(0);
+                    exist[0] = 1;
+                    // until ready queue is empty
+                    while (front &lt;= rear)
+                    {
+                        p = delete();
+                        if (a[p].BT >= TQ)
+                        {
+                            a[p].BT = a[p].BT - TQ;
+                            TIME = TIME + TQ;
+                        }
+                        else
+                        {
+                            TIME = TIME + a[p].BT;
+                            a[p].BT = 0;
+                        }
+                        // if process is not exist
+                        // in the ready queue even a single
+                        // time then insert it if it arrive
+                        // at time 'TIME'
+                        for (int i = 0; i &lt; n; i++)
+                        {
+                            if (exist[i] == 0 && a[i].AT <= TIME)
+                            {
+                                insert(i);
+                                exist[i] = 1;
+                            }
+                        }
+                        // if process is completed
+                        if (a[p].BT == 0)
+                        {
+                            a[p].TAT = TIME - a[p].AT;
+                            a[p].WT = a[p].TAT - temp[p];
+                            total_tat = total_tat + a[p].TAT;
+                            total_wt = total_wt + a[p].WT;
+                        }
+                        else
+                        {
+                            insert(p);
+                        }
+                    }
+                    Avg_TAT = total_tat / n;
+                    Avg_WT = total_wt / n;
+                    // printing of the answer
+                    printf("ID WT TAT\n");
+                    for (int i = 0; i &lt; n; i++)
+                    {
+                        printf("%d %d %d\n", a[i].id, a[i].WT, a[i].TAT);
+                    }
+                    printf("Average waiting time of the processes is : %f\n", Avg_WT);
+                    printf("Average turn around time of the processes is : %f\n", Avg_TAT);
+                    return 0;
+                }
+                
+
+              
+            </pre>
+        </div>
+        <div class="col-2">
+            <pre>
+                <h1>Program 1 :FCFS (First Come First Serve)</h1>
+                Input: 
+                - Number of processes n
+                - For each process i:
+                  - Process Name pn[i]
+                  - Arrival Time arr[i]
+                  - Burst Time bur[i]
+
+                Sort processes by arrival time:
+                - Use any sorting algorithm (e.g., Bubble Sort) to sort the processes based on their arrival times.
+
+                Calculate Start Time, Finish Time, Waiting Time, and Turnaround Time:
+                - Initialize star[0] = arr[0]
+                - For each process i from 1 to n-1:
+                  - star[i] = finish[i-1]
+                  - wt[i] = star[i] - arr[i]
+                  - finish[i] = star[i] + bur[i]
+                  - tat[i] = finish[i] - arr[i]
+
+                Output:
+                - Print Process Name, Arrival Time, Burst Time, Waiting Time, Start Time, Turnaround Time, and Finish Time for each process.
+                - Calculate and print Average Waiting Time and Average Turnaround Time.
+
+
+                <h1>Program 2: SJF (Shortest Job First)</h1>
+
+                Input: 
+                - Number of processes n
+                - For each process i:
+                  - Arrival Time at[i]
+                  - Burst Time burst_time[i]
+
+                Find the smallest burst time process:
+                - Initialize smallest = 9
+                - For each process i from 0 to n-1:
+                  - If at[i] ≤ time and burst_time[i] > 0 and burst_time[i] < burst_time[smallest], update smallest = i
+
+                Update time and process details:
+                - Update time with the burst time of the smallest process
+                - Calculate Turnaround Time and Waiting Time for the smallest process
+                - Print the process details
+
+                Output:
+                - Print Turnaround Time and Waiting Time for each process
+                - Calculate and print Average Waiting Time and Average Turnaround Time
+
+                <h1>Program 3: RR (Round Robin)</h1>
+                Input: 
+                - Number of processes n
+                - For each process i:
+                  - Arrival Time a[i].AT
+                  - Burst Time a[i].BT
+
+                Initialize queue and variables:
+                - Initialize ready queue queue
+                - Initialize front and rear pointers to -1
+                - Initialize TIME = 0
+
+                Round Robin scheduling:
+                - Insert the first process into the ready queue
+                - While the ready queue is not empty:
+                  - Delete the process from the front of the queue
+                  - Execute the process for a time quantum or until completion
+                  - Update time and process details
+                  - If the process is not completed, reinsert it into the queue
+                  - If a new process arrives during execution, insert it into the queue
+
+                Output:
+                - Print the Waiting Time and Turnaround Time for each process
+                - Calculate and print the Average Waiting Time and Average Turnaround Time
+
+
+            </pre>
+        </div>
+
+    </div>
+    <hr>
+</body>
+
+</html>

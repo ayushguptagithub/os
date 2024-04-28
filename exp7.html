@@ -1,0 +1,169 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        h1 {
+            color: red;
+        }
+
+        pre {
+            margin-left: 20px;
+        }
+
+        .row {
+            display: flex;
+            flex-direction: row;
+        }
+        ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border:#979595;
+}
+
+li {
+  float: left;
+  border-right:1px solid #bbb;
+}
+
+li:last-child {
+  border-right: none;
+}
+
+li a {
+  display: block;
+  color: rgb(0, 0, 0);
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover:not(.active) {
+  background-color: #979595;
+}
+
+.active {
+  background-color: #9fa1a0;
+}
+
+    </style>
+</head>
+
+<body>
+    <ul>
+        <li><a href="index.html">Exp1</a></li>
+        <li><a href="exp2.html">Exp2</a></li>
+        <li><a href="exp3.html">Exp3</a></li>
+        <li ><a href="exp4.html">Exp4</a></li>
+        <li><a href="exp5.html">Exp5</a></li>
+        <li><a href="exp6.html">Exp6</a></li>
+        <li><a class="active" href="exp7.html">Exp7</a></li>
+        <li ><a href="exp8.html">Exp8</a></li>
+        <li><a href="exp9.html">Exp9</a></li>
+        <li><a href="exp10.html">Exp10</a></li>
+        <li><a href="exp11.html">Exp11</a></li>
+        <li ><a href="exp12.html">Exp12</a></li>
+        <li><a href="exp13.html">Exp13</a></li>
+        
+      </ul>
+    <hr>
+    <div class=row>
+        <div class="col-1">
+            <pre>
+                <h1>Program 1</h1>
+
+                #include&lt;pthread.h&gt;
+                #include&lt;stdio.h&gt;
+                #include&lt;semaphore.h&gt;
+                #include&lt;unistd.h&gt;
+                void *fun1();
+                void *fun2();
+                int shared=1; 
+                sem_t s; 
+                int main() {
+                    sem_init(&s, 0, 1); 
+                    pthread_t thread1, thread2;
+                    pthread_create(&thread1, NULL, fun1, NULL);
+                    pthread_create(&thread2, NULL, fun2, NULL);
+                    pthread_join(thread1, NULL);
+                    pthread_join(thread2, NULL);
+                    printf("Final value of shared is %d\n", shared); 
+                }
+                void *fun1() {
+                    int x;
+                    sem_wait(&s); 
+                    x = shared;
+                    printf("Thread1 reads the value as %d\n", x);
+                    x++; 
+                    printf("Local updation by Thread1: %d\n", x);
+                    sleep(1); 
+                    shared = x; 
+                    printf("Value of shared variable updated by Thread1 is: %d\n", shared);
+                    sem_post(&s);
+                }
+                void *fun2() {
+                    int y;
+                    sem_wait(&s);
+                    y = shared;
+                    printf("Thread2 reads the value as %d\n", y);
+                    y--;
+                    printf("Local updation by Thread2: %d\n", y);
+                    sleep(1); 
+                    shared = y; 
+                    printf("Value of shared variable updated by Thread2 is: %d\n", shared);
+                    sem_post(&s);
+                }
+
+            </pre>
+        </div>
+        <div class="col-2">
+            <pre>
+                <h1>Program 1</h1>
+                1. Start
+                2. Include necessary header files: pthread.h, stdio.h, semaphore.h, unistd.h
+                3. Declare global variables:
+                    a. shared (integer) initialized to 1
+                    b. semaphore variable s (sem_t)
+                4. Define function prototypes:
+                    a. void *fun1()
+                    b. void *fun2()
+                5. Define the main function
+                    a. Initialize semaphore s using sem_init() with initial value 1
+                    b. Declare pthread variables: thread1, thread2
+                    c. Create two threads:
+                        i. Thread 1 with fun1 as the function, passing NULL as the argument
+                        ii. Thread 2 with fun2 as the function, passing NULL as the argument
+                    d. Wait for both threads to finish using pthread_join() for each thread
+                    e. Print the final value of shared variable
+                6. Define the fun1 function
+                    a. Declare local variable x (integer)
+                    b. Wait on semaphore s using sem_wait()
+                    c. Read the value of shared variable into x
+                    d. Print the value of x read by Thread1
+                    e. Increment x and print the locally updated value by Thread1
+                    f. Sleep for 1 second
+                    g. Update the value of shared variable with x
+                    h. Release semaphore s using sem_post()
+                7. Define the fun2 function
+                    a. Declare local variable y (integer)
+                    b. Wait on semaphore s using sem_wait()
+                    c. Read the value of shared variable into y
+                    d. Print the value of y read by Thread2
+                    e. Decrement y and print the locally updated value by Thread2
+                    f. Sleep for 1 second
+                    g. Update the value of shared variable with y
+                    h. Release semaphore s using sem_post()
+                8. End
+
+            </pre>
+        </div>
+
+    </div>
+    <hr>
+</body>
+
+</html>

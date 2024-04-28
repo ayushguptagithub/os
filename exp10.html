@@ -1,0 +1,372 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        h1 {
+            color: red;
+        }
+
+        pre {
+            margin-left: 20px;
+        }
+
+        .row {
+            display: flex;
+            flex-direction: row;
+        }
+        ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border:#979595;
+}
+
+li {
+  float: left;
+  border-right:1px solid #bbb;
+}
+
+li:last-child {
+  border-right: none;
+}
+
+li a {
+  display: block;
+  color: rgb(0, 0, 0);
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover:not(.active) {
+  background-color: #979595;
+}
+
+.active {
+  background-color: #9fa1a0;
+}
+
+    </style>
+</head>
+
+<body>
+    <ul>
+        <li><a href="index.html">Exp1</a></li>
+        <li><a href="exp2.html">Exp2</a></li>
+        <li><a href="exp3.html">Exp3</a></li>
+        <li ><a href="exp4.html">Exp4</a></li>
+        <li><a href="exp5.html">Exp5</a></li>
+        <li><a href="exp6.html">Exp6</a></li>
+        <li><a href="exp7.html">Exp7</a></li>
+        <li ><a href="exp8.html">Exp8</a></li>
+        <li><a href="exp9.html">Exp9</a></li>
+        <li><a class="active" href="exp10.html">Exp10</a></li>
+        <li><a href="exp11.html">Exp11</a></li>
+        <li ><a href="exp12.html">Exp12</a></li>
+        <li><a href="exp13.html">Exp13</a></li>
+        
+      </ul>
+    <hr>
+    <div class=row>
+        <div class="col-1">
+            <pre>
+               <h1>Program 1 :Fcfs disk </h1> 
+              
+                #include&lt;stdio.h&gt;
+                #include&lt;stdlib.h&gt;
+
+                int main() {
+                    int memsize = 32;
+                    int pagesize, nofpage;
+                    int RQ[100];
+                    int TotalHeadMoment = 0, initial;
+
+                    printf("Enter the number of Requests\n");
+                    scanf("%d", &nofpage);
+
+                    printf("Enter the Requests sequence\n");
+                    for (int i = 0; i &lt; nofpage; i++)
+                        scanf("%d", &RQ[i]);
+
+                    printf("Enter initial head position\n");
+                    scanf("%d", &initial);
+
+                    // logic for FCFS disk scheduling
+                    for (int i = 0; i &lt; nofpage; i++) {
+                        TotalHeadMoment += abs(RQ[i] - initial);
+                        initial = RQ[i];
+                    }
+
+                    printf("Total head moment is %d", TotalHeadMoment);
+
+                    return 0;
+                }
+
+                <h1>Program 2:SStf disk</h1>
+                
+                  #include&lt;stdio.h&gt;
+                  #include&lt;stdlib.h&gt;
+
+                  int main() {
+                      int RQ[100], n, TotalHeadMoment = 0, initial, count = 0;
+
+                      printf("Enter the number of Requests\n");
+                      scanf("%d", &n);
+
+                      printf("Enter the Requests sequence\n");
+                      for (int i = 0; i &lt; n; i++)
+                          scanf("%d", &RQ[i]);
+
+                      printf("Enter initial head position\n");
+                      scanf("%d", &initial);
+
+                      // logic for SSTF disk scheduling
+                      while (count != n) {
+                          int min = 1000, d, index;
+
+                          for (int i = 0; i &lt; n; i++) {
+                              d = abs(RQ[i] - initial);
+                              if (min &gt; d) {
+                                  min = d;
+                                  index = i;
+                              }
+                          }
+
+                          TotalHeadMoment += min;
+                          initial = RQ[index];
+                          RQ[index] = 1000;  // mark as visited
+                          count++;
+                      }
+
+                      printf("Total head movement is %d", TotalHeadMoment);
+
+                      return 0;
+                  }
+
+                  <h1>Program 3 : Scan disk</h1>
+
+                  
+                    #include&lt;stdio.h&gt;
+                    #include&lt;stdlib.h&gt;
+
+                    int main() {
+                        int RQ[100], n, TotalHeadMoment = 0, initial, size, move;
+
+                        printf("Enter the number of Requests\n");
+                        scanf("%d", &n);
+
+                        printf("Enter the Requests sequence\n");
+                        for (int i = 0; i &lt; n; i++)
+                            scanf("%d", &RQ[i]);
+
+                        printf("Enter initial head position\n");
+                        scanf("%d", &initial);
+
+                        printf("Enter total disk size\n");
+                        scanf("%d", &size);
+
+                        printf("Enter the head movement direction for high 1 and for low 0\n");
+                        scanf("%d", &move);
+
+                        // logic for SCAN disk scheduling
+                        for (int i = 0; i &lt; n; i++) {
+                            for (int j = 0; j &lt; n - i - 1; j++) {
+                                if (RQ[j] &gt; RQ[j + 1]) {
+                                    int temp = RQ[j];
+                                    RQ[j] = RQ[j + 1];
+                                    RQ[j + 1] = temp;
+                                }
+                            }
+                        }
+
+                        int index;
+                        for (int i = 0; i &lt; n; i++) {
+                            if (initial &lt; RQ[i]) {
+                                index = i;
+                                break;
+                            }
+                        }
+
+                        // if movement is towards high value
+                        if (move == 1) {
+                            for (int i = index; i &lt; n; i++) {
+                                TotalHeadMoment += abs(RQ[i] - initial);
+                                initial = RQ[i];
+                            }
+
+                            TotalHeadMoment += abs(size - RQ[n - 1] - 1);
+                            initial = size - 1;
+
+                            for (int i = index - 1; i &gt;= 0; i--) {
+                                TotalHeadMoment += abs(RQ[i] - initial);
+                                initial = RQ[i];
+                            }
+                        } else {
+                            for (int i = index - 1; i &gt;= 0; i--) {
+                                TotalHeadMoment += abs(RQ[i] - initial);
+                                initial = RQ[i];
+                            }
+
+                            TotalHeadMoment += abs(RQ[0] - 0);
+                            initial = 0;
+
+                            for (int i = index; i &lt; n; i++) {
+                                TotalHeadMoment += abs(RQ[i] - initial);
+                                initial = RQ[i];
+                            }
+                        }
+
+                        printf("Total head movement is %d", TotalHeadMoment);
+
+                        return 0;
+                    }
+
+                    <h1>Program 4: Look</h1>
+                    
+                    #include&lt;stdio.h&gt;
+                    #include&lt;stdlib.h&gt;
+
+                    int main() {
+                        int RQ[100], n, TotalHeadMoment = 0, initial, size, move;
+
+                        printf("Enter the number of Requests\n");
+                        scanf("%d", &n);
+
+                        printf("Enter the Requests sequence\n");
+                        for (int i = 0; i &lt; n; i++)
+                            scanf("%d", &RQ[i]);
+
+                        printf("Enter initial head position\n");
+                        scanf("%d", &initial);
+
+                        printf("Enter total disk size\n");
+                        scanf("%d", &size);
+
+                        printf("Enter the head movement direction for high 1 and for low 0\n");
+                        scanf("%d", &move);
+
+                        // logic for LOOK disk scheduling
+                        for (int i = 0; i &lt; n; i++) {
+                            for (int j = 0; j &lt; n - i - 1; j++) {
+                                if (RQ[j] &gt; RQ[j + 1]) {
+                                    int temp = RQ[j];
+                                    RQ[j] = RQ[j + 1];
+                                    RQ[j + 1] = temp;
+                                }
+                            }
+                        }
+
+                        int index;
+                        for (int i = 0; i &lt; n; i++) {
+                            if (initial &lt; RQ[i]) {
+                                index = i;
+                                break;
+                            }
+                        }
+
+                        // if movement is towards high value
+                        if (move == 1) {
+                            for (int i = index; i &lt; n; i++) {
+                                TotalHeadMoment += abs(RQ[i] - initial);
+                                initial = RQ[i];
+                            }
+
+                            for (int i = index - 1; i &gt;= 0; i--) {
+                                TotalHeadMoment += abs(RQ[i] - initial);
+                                initial = RQ[i];
+                            }
+                        } else {
+                            for (int i = index - 1; i &gt;= 0; i--) {
+                                TotalHeadMoment += abs(RQ[i] - initial);
+                                initial = RQ[i];
+                            }
+
+                            for (int i = index; i &lt; n; i++) {
+                                TotalHeadMoment += abs(RQ[i] - initial);
+                                initial = RQ[i];
+                            }
+                        }
+
+                        printf("Total head movement is %d", TotalHeadMoment);
+
+                        return 0;
+                    }
+
+
+            </pre>
+        </div>
+        <div class="col-2">
+            <pre>
+                <h1> Program 1:</h1>
+                1. Initialize variables: memsize = 32, pagesize, nofpage, RQ[100], TotalHeadMovement = 0, initial.
+                2. Read the number of requests (n) from the user.
+                3. Read the request sequence (RQ) from the user.
+                4. Read the initial head position (initial) from the user.
+                5. Iterate over each request in RQ:
+                    a. Add the absolute difference between the current request and the initial head position to TotalHeadMovement.
+                    b. Update the initial head position to the current request.
+                6. Print the total head movement (TotalHeadMovement).
+                7. End.
+
+                <h1>Program 2:</h1>
+                1. Initialize variables: RQ[100], n, TotalHeadMovement = 0, initial, count = 0.
+                2. Read the number of requests (n) from the user.
+                3. Read the request sequence (RQ) from the user.
+                4. Read the initial head position (initial) from the user.
+                5. Repeat until all requests are completed:
+                    a. Find the request closest to the current head position (initial).
+                    b. Add the absolute difference between the current request and the initial head position to TotalHeadMovement.
+                    c. Update the initial head position to the current request.
+                    d. Mark the processed request as completed.
+                6. Print the total head movement (TotalHeadMovement).
+                7. End.
+
+                <h1>Program 3:</h1>
+                1. Initialize variables: RQ[100], n, TotalHeadMovement = 0, initial, size, move.
+                2. Read the number of requests (n), request sequence (RQ), initial head position (initial), total disk size (size), and head movement direction (move) from the user.
+                3. Sort the request sequence RQ in ascending order.
+                4. Find the index in RQ where the initial head position is located.
+                5. If the movement is towards high value:
+                    a. Iterate over requests from the current index to the end:
+                          i. Add the absolute difference between the current request and the initial head position to TotalHeadMovement.
+                          ii. Update the initial head position to the current request.
+                    b. Add the absolute difference between the last request and the size of the disk to TotalHeadMovement.
+                    c. Update the initial head position to the last position of the disk.
+                    d. Iterate over requests from the current index (minus one) to the beginning:
+                          i. Add the absolute difference between the current request and the initial head position to TotalHeadMovement.
+                          ii. Update the initial head position to the current request.
+                6. If the movement is towards low value (similar to step 5 but in reverse order).
+                7. Print the total head movement (TotalHeadMovement).
+                8. End.
+
+                <h1>Program 4:</h1>
+                1. Initialize variables: RQ[100], n, TotalHeadMovement = 0, initial, size, move.
+                2. Read the number of requests (n), request sequence (RQ), initial head position (initial), total disk size (size), and head movement direction (move) from the user.
+                3. Sort the request sequence RQ in ascending order.
+                4. Find the index in RQ where the initial head position is located.
+                5. If the movement is towards high value:
+                    a. Iterate over requests from the current index to the end:
+                          i. Add the absolute difference between the current request and the initial head position to TotalHeadMovement.
+                          ii. Update the initial head position to the current request.
+                    b. Iterate over requests from the current index (minus one) to the beginning:
+                          i. Add the absolute difference between the current request and the initial head position to TotalHeadMovement.
+                          ii. Update the initial head position to the current request.
+                6. If the movement is towards low value (similar to step 5 but in reverse order).
+                7. Print the total head movement (TotalHeadMovement).
+                8. End.
+
+
+
+
+            </pre>
+        </div>
+
+    </div>
+    <hr>
+</body>
+
+</html>

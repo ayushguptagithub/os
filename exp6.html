@@ -1,0 +1,241 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        h1 {
+            color: red;
+        }
+
+        pre {
+            margin-left: 20px;
+        }
+
+        .row {
+            display: flex;
+            flex-direction: row;
+        }
+        ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border:#979595;
+}
+
+li {
+  float: left;
+  border-right:1px solid #bbb;
+}
+
+li:last-child {
+  border-right: none;
+}
+
+li a {
+  display: block;
+  color: rgb(0, 0, 0);
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover:not(.active) {
+  background-color: #979595;
+}
+
+.active {
+  background-color: #9fa1a0;
+}
+
+    </style>
+</head>
+
+<body>
+    <ul>
+        <li><a href="index.html">Exp1</a></li>
+        <li><a href="exp2.html">Exp2</a></li>
+        <li><a href="exp3.html">Exp3</a></li>
+        <li ><a href="exp4.html">Exp4</a></li>
+        <li><a href="exp5.html">Exp5</a></li>
+        <li><a class="active" href="exp6.html">Exp6</a></li>
+        <li><a href="exp7.html">Exp7</a></li>
+        <li ><a href="exp8.html">Exp8</a></li>
+        <li><a href="exp9.html">Exp9</a></li>
+        <li><a href="exp10.html">Exp10</a></li>
+        <li><a href="exp11.html">Exp11</a></li>
+        <li ><a href="exp12.html">Exp12</a></li>
+        <li><a href="exp13.html">Exp13</a></li>
+        
+      </ul>
+    <hr>
+    <div class=row>
+        <div class="col-1">
+            <pre>
+                <h1>Program 1</h1>
+                #include&lt;stdio.h&gt;
+                #include&lt;stdlib.h&gt;
+                #include&lt;unistd.h&gt;
+                #include&lt;pthread.h&gt;
+                void *thread_function(void *arg);
+                int i,j;
+                int main() {
+                    pthread_t a_thread; //thread declaration
+                    pthread_create(&a_thread, NULL, thread_function, NULL); //thread is created
+                    pthread_join(a_thread, NULL); //process waits for thread to finish . //Comment this line to
+                    printf("Inside Main Program\n");
+                    for(j=20;j&lt;25;j++)
+                    {
+                        printf("%d\n",j);
+                        sleep(1);
+                    }
+                }
+                void *thread_function(void *arg) {
+                    // the work to be done by the thread is defined in this function
+                    printf("Inside Thread\n");
+                    for(i=0;i&lt;5;i++)
+                {
+                printf("%d\n",i);
+                sleep(1);
+                }
+                }
+
+                <h1>Program 2</h1>
+
+                #include&lt;stdio.h&gt;
+                #include&lt;stdlib.h&gt;
+                #include&lt;unistd.h&gt;
+                #include&lt;pthread.h&gt;
+                #include&lt;string.h&gt;
+                void *thread_function(void *arg);
+                int i, n, j;
+                int main() {
+                    char *m = "5";
+                    pthread_t a_thread; //thread declaration
+                    void *result;
+                    pthread_create(&a_thread, NULL, thread_function, m); //thread is created
+                    pthread_join(a_thread, &result);
+                    printf("Thread joined\n");
+                    for (j = 20; j &lt; 25; j++) {
+                        printf("%d\n", j);
+                        sleep(1);
+                    }
+                    printf("thread returned %s\n", (char *)result);
+                }
+                void *thread_function(void *arg) {
+                    n = atoi(arg);
+                    for (i = 0; i &lt; n; i++) {
+                        printf("%d\n", i);
+                        sleep(1);
+                    }
+                    pthread_exit("Done"); // Thread returns "Done"
+                }
+
+                  <h1>Program 3</h1>
+
+                  #include&lt;stdio.h&gt;
+                  #include&lt;stdlib.h&gt;
+                  #include&lt;unistd.h&gt;
+                  #include&lt;pthread.h&gt;
+                  #include&lt;string.h&gt;
+                  void *thread_function(void *arg);
+                  int num[2]={3,5};
+                  int main() {
+                      pthread_t a_thread; //thread declaration
+                      void *result;
+                      pthread_create(&a_thread, NULL, thread_function,(void *) num); //thread is created
+                      pthread_join(a_thread, &result);
+                      printf("Inside main process\n");
+                      printf("Thread returned:%s\n",(char *)result);
+                  }
+                  void *thread_function(void *arg) {
+                      printf("Inside thread\n");
+                      int *x=arg;
+                      int sum=x[0]+x[1];
+                      printf("sum is %d\n",sum);
+                      pthread_exit("sum calculated");
+                  }
+
+            </pre>
+        </div>
+        <div class="col-2">
+            <pre>
+                <h1>Program 1</h1>
+
+                1. Start
+                2. Include necessary header files: stdio.h, stdlib.h, unistd.h, pthread.h, string.h
+                3. Define the thread function: thread_function(void *arg)
+                    a. Declare variables: i, n (for loop), arg (for argument passed to thread)
+                    b. Convert the argument to an integer using atoi() function and store it in n
+                    c. Iterate from 0 to n - 1
+                        i. Print the value of i
+                        ii. Sleep for 1 second
+                    d. Exit the thread with "Done" message
+                4. Define the main function
+                    a. Declare variables: m (for thread argument), a_thread (for thread), result (for thread result), i, j (for loop)
+                    b. Initialize m to "5"
+                    c. Create a thread using pthread_create() function, passing thread_function as the function pointer and m as the argument
+                    d. Join the thread using pthread_join() function, storing the result in result
+                    e. Print "Thread joined"
+                    f. Iterate from 20 to 24
+                        i. Print the value of j
+                        ii. Sleep for 1 second
+                    g. Print the result returned by the thread
+                5. End main function
+
+                <h1>Program 2</h1>
+
+                1. Start
+                2. Include necessary header files: stdio.h, stdlib.h, unistd.h, pthread.h, string.h
+                3. Define the thread function: thread_function(void *arg)
+                    a. Declare variables: i, n (for loop), arg (for argument passed to thread)
+                    b. Convert the argument to an integer using atoi() function and store it in n
+                    c. Iterate from 0 to n - 1
+                        i. Print the value of i
+                        ii. Sleep for 1 second
+                    d. Exit the thread with "Done" message
+                4. Define the main function
+                    a. Declare variables: m (for thread argument), a_thread (for thread), result (for thread result), i, j (for loop)
+                    b. Initialize m to "5"
+                    c. Create a thread using pthread_create() function, passing thread_function as the function pointer and m as the argument
+                    d. Join the thread using pthread_join() function, storing the result in result
+                    e. Print "Thread joined"
+                    f. Iterate from 20 to 24
+                        i. Print the value of j
+                        ii. Sleep for 1 second
+                    g. Print the result returned by the thread
+                5. End main function
+
+                <h1>Program 3</h1>
+
+                1. Start
+                2. Include necessary header files: stdio.h, stdlib.h, unistd.h, pthread.h, string.h
+                3. Define the thread function: thread_function(void *arg)
+                    a. Declare variables: x (for argument passed to thread), sum (for sum calculation)
+                    b. Cast the argument to an integer pointer and store it in x
+                    c. Calculate the sum of the two integers in the array pointed by x
+                    d. Print the sum
+                    e. Exit the thread with "sum calculated" message
+                4. Define the main function
+                    a. Declare variables: a_thread (for thread), result (for thread result), num (array of two integers), i (for loop)
+                    b. Initialize num array to {3, 5}
+                    c. Create a thread using pthread_create() function, passing thread_function as the function pointer and num as the argument
+                    d. Join the thread using pthread_join() function, storing the result in result
+                    e. Print "Inside main process"
+                    f. Print the result returned by the thread
+                5. End main function
+
+               
+
+
+
+            </pre>
+        </div>
+
+    </div>
+    <hr>
+</body>
+
+</html>

@@ -1,0 +1,130 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        h1 {
+            color: red;
+        }
+
+        pre {
+            margin-left: 20px;
+        }
+
+        .row {
+            display: flex;
+            flex-direction: row;
+        }
+        ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border:#979595;
+}
+
+li {
+  float: left;
+  border-right:1px solid #bbb;
+}
+
+li:last-child {
+  border-right: none;
+}
+
+li a {
+  display: block;
+  color: rgb(0, 0, 0);
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover:not(.active) {
+  background-color: #979595;
+}
+
+.active {
+  background-color: #9fa1a0;
+}
+
+    </style>
+</head>
+
+<body>
+    <ul>
+        <li><a href="index.html">Exp1</a></li>
+        <li><a href="exp2.html">Exp2</a></li>
+        <li><a href="exp3.html">Exp3</a></li>
+        <li ><a href="exp4.html">Exp4</a></li>
+        <li><a href="exp5.html">Exp5</a></li>
+        <li><a href="exp6.html">Exp6</a></li>
+        <li><a href="exp7.html">Exp7</a></li>
+        <li ><a href="exp8.html">Exp8</a></li>
+        <li><a href="exp9.html">Exp9</a></li>
+        <li><a href="exp10.html">Exp10</a></li>
+        <li><a class="active" href="exp11.html">Exp11</a></li>
+        <li ><a href="exp12.html">Exp12</a></li>
+        <li><a href="exp13.html">Exp13</a></li>
+        
+      </ul>
+    <hr>
+    <div class=row>
+        <div class="col-1">
+            <pre>
+                <h1>Program 1:</h1>
+                #include&lt;stdio.h&gt;
+
+                void main() {
+                    int i, j, n, block[20], start;
+                    printf("Enter the no of file: \n");
+                    scanf("%d", &n);
+                    printf("Enter the number of blocks needed for each file: \n");
+                    for (i = 0; i &lt; n; i++)
+                        scanf("%d", &block[i]);
+                    start = 0;
+                    printf("\t\tFile Name\tStart\tSize of file\t\t\n");
+                    printf("\n\t\tFile1\t\t%d\t\t%d\n", start, block[0]);
+                    for (i = 2; i &lt;= n; i++) {
+                        start = start + block[i - 2];
+                        printf("\t\tFile%d\t\t%d\t\t%d\n", i, start, block[i - 1]);
+                    }
+                }
+
+            </pre>
+        </div>
+        <div class="col-2">
+            <pre>
+              Algorithm:
+              -----------
+              1. Start the program.
+              2. Declare variables:
+                  - i, j, n
+                  - block (array to store block count)
+                  - start (to store starting block)
+              3. Prompt user for number of files (n).
+              4. Prompt user for blocks needed for each file and store in 'block' array.
+              5. Initialize 'start' to 0.
+              6. Display table header:
+                  - "File Name", "Start", "Size of file"
+              7. Display details of first file (File1):
+                  - Starting block: 0
+                  - Size: block[0]
+              8. For each subsequent file (File2 onwards):
+                  a. Update 'start' by adding size of previous file (block[i - 2]).
+                  b. Display details of file:
+                      - Name: Filei
+                      - Start position: start
+                      - Size: block[i - 1]
+              9. End the program.
+              
+            </pre>
+        </div>
+
+    </div>
+    <hr>
+</body>
+
+</html>

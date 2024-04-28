@@ -1,0 +1,187 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        h1 {
+            color: red;
+        }
+
+        pre {
+            margin-left: 20px;
+        }
+
+        .row {
+            display: flex;
+            flex-direction: row;
+        }
+        ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border:#979595;
+}
+
+li {
+  float: left;
+  border-right:1px solid #bbb;
+}
+
+li:last-child {
+  border-right: none;
+}
+
+li a {
+  display: block;
+  color: rgb(0, 0, 0);
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover:not(.active) {
+  background-color: #979595;
+}
+
+.active {
+  background-color: #9fa1a0;
+}
+
+    </style>
+</head>
+
+<body>
+    <ul>
+        <li><a href="index.html">Exp1</a></li>
+        <li><a href="exp2.html">Exp2</a></li>
+        <li><a href="exp3.html">Exp3</a></li>
+        <li ><a href="exp4.html">Exp4</a></li>
+        <li><a class="active" href="exp5.html">Exp5</a></li>
+        <li><a href="exp6.html">Exp6</a></li>
+        <li><a href="exp7.html">Exp7</a></li>
+        <li ><a href="exp8.html">Exp8</a></li>
+        <li><a href="exp9.html">Exp9</a></li>
+        <li><a href="exp10.html">Exp10</a></li>
+        <li><a href="exp11.html">Exp11</a></li>
+        <li ><a href="exp12.html">Exp12</a></li>
+        <li><a href="exp13.html">Exp13</a></li>
+        
+      </ul>
+    <hr>
+    <div class=row>
+        <div class="col-1">
+            <pre>
+              <h1>Program 1</h1>
+              #include&lt;unistd.h&gt;
+              #include&lt;sys/types.h&gt;
+              #include&lt;sys/stat.h&gt;
+              #include&lt;fcntl.h&gt;
+              #include&lt;stdio.h&gt;
+              int main() {
+                  int n, fd;
+                  char buff[50];
+                  fd = open("test.txt", O_RDONLY); 
+                  printf("The file descriptor of the file is: %d\n", fd);
+                  n = read(fd, buff, 10);
+                  write(1, buff, n);
+              }
+
+              <h1>Program 2</h1>
+              #include&lt;unistd.h&gt;
+              #include&lt;sys/types.h&gt;
+              #include&lt;sys/stat.h&gt;
+              #include&lt;fcntl.h&gt;
+              int main() {
+                  int n, fd, fd1;
+                  char buff[50];
+                  fd = open("test.txt", O_RDONLY);
+                  n = read(fd, buff, 10);
+                  fd1 = open("towrite.txt", O_WRONLY|O_CREAT, 0642);
+                  write(fd1, buff, n);
+              }
+
+              <h1>Program 3</h1>
+              #include&lt;unistd.h&gt;
+              #include&lt;stdio.h&gt;
+              #include&lt;fcntl.h&gt;
+              int main() {
+                  int old_fd, new_fd;
+                  old_fd = open("test.txt", O_RDWR);
+                  printf("File descriptor is %d\n", old_fd);
+                  new_fd = dup(old_fd);
+                  printf("New file descriptor is %d\n", new_fd);
+              }
+
+              <h1>Program 4</h1>
+              #include&lt;unistd.h&gt;
+              #include&lt;stdio.h&gt;
+              #include&lt;fcntl.h&gt;
+              int main() {
+                  int old_fd, new_fd;
+                  old_fd = open("test.txt", O_RDWR);
+                  printf("File descriptor is %d\n", old_fd);
+                  new_fd = dup2(old_fd, 7);
+                  printf("New file descriptor is %d\n", new_fd);
+              }
+
+                
+            </pre>
+        </div>
+        <div class="col-2">
+            <pre>
+                <h1>Program 1</h1>
+                1. Start
+                2. Include necessary header files: unistd.h, sys/types.h, sys/stat.h, fcntl.h, stdio.h
+                3. Define the main function
+                    a. Declare variables: n (for read/write length), fd (for file descriptor), buff[50] (for data)
+                    b. Open the file "test.txt" in read-only mode using the open() function and save the file descriptor in fd
+                    c. Print the file descriptor value using printf()
+                    d. Read 10 characters from the file pointed to by fd and store them in buffer (buff) using the read() function
+                    e. Write the data from buffer to standard output (screen) using the write() function
+                4. End main function
+
+                <h1>Program 2</h1>
+                1. Start
+                2. Include necessary header files: unistd.h, sys/types.h, sys/stat.h, fcntl.h
+                3. Define the main function
+                    a. Declare variables: n (for read/write length), fd and fd1 (for file descriptors), buff[50] (for data)
+                    b. Open the file "test.txt" in read-only mode using the open() function and save the file descriptor in fd
+                    c. Read 10 characters from the file pointed to by fd and store them in buffer (buff) using the read() function
+                    d. Open (or create if not exist) a file "towrite.txt" in write-only mode using the open() function with appropriate flags and permissions, save the file descriptor in fd1
+                    e. Write the data from buffer to the file "towrite.txt" using the write() function
+                4. End main function
+
+                <h1>Program 3</h1>
+                1. Start
+                2. Include necessary header files: unistd.h, stdio.h, fcntl.h
+                3. Define the main function
+                    a. Declare variables: old_fd and new_fd (for file descriptors)
+                    b. Open the file "test.txt" in read-write mode using the open() function and save the file descriptor in old_fd
+                    c. Print the file descriptor value using printf()
+                    d. Duplicate the file descriptor using dup() function and save the new file descriptor in new_fd
+                    e. Print the new file descriptor value using printf()
+                4. End main function
+
+                <h1>Program 4</h1>
+                1. Start
+                2. Include necessary header files: unistd.h, stdio.h, fcntl.h
+                3. Define the main function
+                    a. Declare variables: old_fd and new_fd (for file descriptors)
+                    b. Open the file "test.txt" in read-write mode using the open() function and save the file descriptor in old_fd
+                    c. Print the file descriptor value using printf()
+                    d. Duplicate the file descriptor using dup2() function with a specified new file descriptor (7 in this case) and save the new file descriptor in new_fd
+                    e. Print the new file descriptor value using printf()
+                4. End main function
+
+
+            </pre>
+        </div>
+
+    </div>
+    <hr>
+</body>
+
+</html>
